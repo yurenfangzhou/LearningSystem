@@ -13,6 +13,8 @@ using System.IO;
 using WeiSha.Common;
 using NPOI.HSSF.UserModel;
 using NPOI.SS.Converter;
+using Song.ServiceInterfaces;
+using System.Text.RegularExpressions;
 
 
 namespace Song.Site.Manage
@@ -23,14 +25,25 @@ namespace Song.Site.Manage
         protected void Page_Load(object sender, EventArgs e)
         {
 
-            string x = Request.ServerVariables["REQUEST_METHOD"];
-            string b = x;
+            Song.Entities.Organization org = Business.Do<IOrganization>().OrganCurrent();
 
-            Song.ServiceInterfaces.ITask task = Business.Do<Song.ServiceInterfaces.ITask>();
-
+            this.Title = IsDestopApp.ToString();
             
 
         }
-
+        /// <summary>
+        /// 前端浏览器是否是桌面应用
+        /// </summary>
+        public static bool IsDestopApp
+        {
+            get
+            {
+                System.Web.HttpContext _context = System.Web.HttpContext.Current;
+                string userAgent = _context.Request.ServerVariables["HTTP_USER_AGENT"];
+                Regex b = new Regex(@"DeskApp\(.[^\)]*\)");
+                if (b.IsMatch(userAgent)) return true;
+                return false;
+            }
+        }
     }
 }

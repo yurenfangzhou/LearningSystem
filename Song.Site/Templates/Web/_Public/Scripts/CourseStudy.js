@@ -18,7 +18,7 @@
             var hg = $(window).height() - $("#mainTop").height() - $("#playerInfo").height();
             $("#videobox").height(hg - 70);
             //中间分隔线的高度设置
-            $("#median").height($(window).height()).css("line-height", $(window).height() + "px");
+            $("#median").height($(window).height()).find("span").width($("#median").width()+2);
             //章节区域高度设置
             $(".itemList").height($(window).height() - $(".boxBar").height() - 30);
             //习题的高度
@@ -40,6 +40,11 @@
                 if (id == olid) $(this).addClass("current");
                 if (id == "") $(".outline .olitem:eq(0)").addClass("current");
             });
+			//是否有视频
+			$(".olitem").each(function () {
+				var isvideo=$(this).attr("isvideo");
+				if(isvideo=="True")$(this).addClass("li-video");
+			});
         },
         //事件    
         event: function () {
@@ -56,6 +61,11 @@
                 }
                 window.loyout.fullScreen = !window.loyout.fullScreen;
             });
+			//知识库的按钮
+			$("#btnKnowledge").click(function(){				
+				new top.PageBox('课程知识库','Knowledges.ashx?couid='+$().getPara("couid"),100,100,null,window.name).Open();
+				return false;
+			});
             //设置标题栏的事件
             (function setInitTilte() {
                 //取当前状态值               
@@ -94,7 +104,7 @@ function setInit_4() {
 //如果你不需要某项设置，可以直接删除，注意var flashvars的最后一个值后面不能有逗号
 function loadedHandler() {
     //上次播放进度
-    var history = $().cookie("outlineVideo_" + $().getPara('id'));
+    var history = $().cookie("outlineVideo_" + $().getPara('olid'));
     $("#historyTime").text(history);
     if (history == null) $(".historyInfo").hide();
     if (CKobject.getObjectById('ckplayer_videobox').getType()) {//说明使用html5播放器
@@ -125,7 +135,7 @@ $(window).focus(function () {
     //如果视频事件的弹窗存在，则不做其它动作。
     if (MsgBox.IsExist) return;
     try {
-        var id = $().getPara('id');
+        var id = $().getPara('olid');
         CKobject.getObjectById('ckplayer_videobox').videoSeek(Number($().cookie("outlineVideo_" + id)));
     } catch (e) { }
 
@@ -134,8 +144,9 @@ $(window).focus(function () {
 var watchTime = Number($("#studyTime").attr("num"));
 watchTime = isNaN(watchTime) ? 0 : watchTime;
 //历史递交记录
-var p = Math.floor(watchTime / Number($("#totalTime").text()) * 10000) / 100;
-var historyLog = isNaN(p) ? 0 : p;
+var totalTime=Number($("#totalTime").text());
+var p = Math.floor(watchTime / totalTime * 10000) / 100;
+var historyLog = isNaN(p)|| p==Number.POSITIVE_INFINITY ? 0 : p;
 //var setT = null;
 function pausedHandler(b) {
     //if (setT) window.clearInterval(setT);

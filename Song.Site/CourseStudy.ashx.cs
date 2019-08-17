@@ -16,18 +16,24 @@ namespace Song.Site
     public class CourseStudy : BasePage
     {
         //章节id,课程id
-        int id = WeiSha.Common.Request.QueryString["id"].Int32 ?? 0;
+        int id = WeiSha.Common.Request.QueryString["olid"].Int32 ?? 0;
         int couid = WeiSha.Common.Request.QueryString["couid"].Int32 ?? 0;
         //状态值（来自地址栏），1为视频，2为内容，3为附件，4为试题
         int stateVal = WeiSha.Common.Request.QueryString["state"].Int32 ?? 0;
         //是否选学的当前课程，是否购买
         bool isStudy = false, isBuy = false;
         protected override void InitPageTemplate(HttpContext context)
-        {
-            //当前章节
+        {            
+            //当前章节，如果章节id，则取课程第一个章节
             Song.Entities.Outline ol = id < 1 ? 
                 Business.Do<IOutline>().OutlineFirst(couid, true)
                 : Business.Do<IOutline>().OutlineSingle(id);
+            couid = couid > 0 ? couid : (ol != null ? ol.Cou_ID : 0);
+            //当前课程            
+            Song.Entities.Course course = Business.Do<ICourse>().CourseSingle(couid);
+            if (course == null || !course.Cou_IsUse) return;
+            this.Document.Variables.SetValue("course", course);
+            //如果章节为空，则不再后面的了
             if (ol == null) return;
             this.Document.Variables.SetValue("outline", ol);
             this.Document.Variables.SetValue("olid", ol.Ol_ID.ToString());
@@ -35,8 +41,8 @@ namespace Song.Site
             this.Document.Variables.SetValue("pat", Business.Do<IOutline>().OutlineSingle(ol.Ol_PID));            
             Response.Cookies.Add(new HttpCookie("olid", ol.Ol_ID.ToString()));
             //当前课程            
-            Song.Entities.Course course = Business.Do<ICourse>().CourseSingle(ol == null ? couid : ol.Cou_ID);
-            if (course == null || !course.Cou_IsUse) return;
+            //Song.Entities.Course course = Business.Do<ICourse>().CourseSingle(couid >0 ? couid : ol.Cou_ID);
+            //if (course == null || !course.Cou_IsUse) return;           
             //是否免费，或是限时免费
             if (course.Cou_IsLimitFree)
             {
@@ -45,6 +51,8 @@ namespace Song.Site
                     course.Cou_IsLimitFree = false;
             }
             this.Document.Variables.SetValue("course", course);
+            //判断是否允许在桌面应用中学习
+            this.Document.Variables.SetValue("StudyForDeskapp", getForDeskapp(course, ol));
             //是否学习当前课程，如果没有学习且课程处于免费，则创建关联
             if (this.Account != null)
             {
@@ -112,6 +120,31 @@ namespace Song.Site
             this.Document.RegisterGlobalFunction(this.getEventQues);
             this.Document.RegisterGlobalFunction(this.getEventFeedback);
             this.Document.RegisterGlobalFunction(this.GetOrder);
+        }
+        /// <summary>
+        /// 判断是否必须在桌面应用中学习
+        /// </summary>
+        /// <returns>如果为true，则必须在课面应用中学习</returns>
+        private bool getForDeskapp(Song.Entities.Course course, Song.Entities.Outline ol)
+        {
+            //自定义配置项
+            WeiSha.Common.CustomConfig config = CustomConfig.Load(this.Organ.Org_Config);
+            //是否限制在桌面应用中学习
+            bool studyFordesk = config["StudyForDeskapp"].Value.Boolean ?? false;   //课程学习需要在桌面应用打开
+            bool freeFordesk = config["FreeForDeskapp"].Value.Boolean ?? false;     //免费课程和试用章节除外
+            if (!WeiSha.Common.Browser.IsDestopApp)
+            {
+                if (!freeFordesk)
+                {
+                    return studyFordesk && !WeiSha.Common.Browser.IsDestopApp;                  
+                }
+                else
+                {
+                    if (course.Cou_IsFree || course.Cou_IsLimitFree) return false;
+                    if (ol.Ol_IsFree) return false;
+                }
+            }
+            return true && !WeiSha.Common.Browser.IsDestopApp;
         }
         #region 章节事件用到的方法
         /// <summary>

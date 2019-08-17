@@ -1,11 +1,53 @@
-﻿
-window.onload = function () {
+﻿//事件组，当试题加载完成后要执行的事件
+window.loadEvent = new Array();
+$(window).load(function () {
+    //加载试题
+    var loadbox = new MsgBox("正在加载试题...", "", 70, 101, "loading");
+    //从本地数据库读取试题数据
+    indexDatabase().then(text => {
+        if (text == null) {
+            //如果本地没有，则从服务器读取
+            $.ajax({
+                url: "QuesExercisesItems.ashx",
+                data: { couid: $().getPara("couid"), olid: $().getPara("olid") },
+                type: "get", cache: true,
+                beforeSend: function (result) {
+                    loadbox.Open();
+                },
+                error: function (msg) { },
+                complete: function (msg) {
+                    loadbox.Close(false);
+                },
+                success: function (data) {
+                    indexDatabase(data).then(text => {
+                        $("#quesArea").html(text);
+                        for (s in window.loadEvent) {
+                            window.loadEvent[s]();
+                        }
+                    });
+
+                }
+            });
+        } else {
+            //如果本地有数据，则直接使用
+            $("#quesArea").html(text);
+            for (s in window.loadEvent) {
+                window.loadEvent[s]();
+            }
+        }
+    });
+
+});
+
+//页面实始化
+window.loadEvent.push(function () {
     //总题数
-    var count = Number($("body").attr("quscount"));
+    var count = $("#quesArea .quesItem").size();
     //设置试题宽度
     var wd = $(window).width();
     var hg = document.querySelector(".context").clientHeight;
-    $("#quesArea").width(wd * (count == 0 ? 1 : count + 10));
+    $("#quesArea").width(wd * (count == 0 ? 1 : count + 10))
+        .css("height", hg == 0 ? "auto" : hg);
     //设置题型
     var quesTypes = $("body").attr("questype").split(",");
     //设置宽高，试题类型
@@ -30,7 +72,81 @@ window.onload = function () {
     });
     //左右滑动切换试题
     finger.init();
+});
+//更新本地试题的按钮事件
+window.loadEvent.push(function () {
+    $(".btnRefresh").click(function () {
+        var msg = new MsgBox("更新试题", "将当前练习的试题与服务器端保持同步。", 80, 220, "confirm");
+        //msg.href = this.href;
+        msg.EnterEvent = function () {
+            msg.Close(msg.WinId);
+            var loadbox = new MsgBox("正在加载试题...", "", 70, 101, "loading");
+            $.ajax({
+                url: "QuesExercisesItems.ashx",
+                data: { couid: $().getPara("couid"), olid: $().getPara("olid") },
+                type: "get", cache: true,
+                beforeSend: function (result) {
+                    loadbox.Open();
+                },
+                error: function (msg) { },
+                complete: function (msg) {
+                    loadbox.Close(false);
+                },
+                success: function (data) {
+                    indexDatabase(data).then(text => {
+                        $("#quesArea").html(text);
+                        //for (s in window.loadEvent) {
+                        //window.loadEvent[s]();
+                        //}
+                        window.location.reload();
+                    });
+
+                }
+            });
+
+        }
+        msg.Open();
+    });
+});
+//本地数据库读写
+function indexDatabase(text) {
+    var couid = $().getPara("couid");
+    var dbname = "QuesExercises_" + couid;
+    return new Promise(((resolve, reject) => {
+        Dexie.exists(dbname).then(function (exists) {
+            var db = new Dexie(dbname);
+            db.version(1).stores({
+                questions: "++id,olid,html"
+            });
+            db.open();
+            if (!exists) {
+                db.questions.put({ olid: $().getPara("olid"), html: text }).then(function (d) {
+                    resolve(text);
+                }).catch(function (error) {
+                    alert("error: " + error);
+                });
+            }
+            if (text == null) {
+                db.questions.where({ olid: $().getPara("olid") }).first(d => {
+                    resolve(d != null ? d.html : d);
+                });
+            } else {
+                db.questions.where({ olid: $().getPara("olid") }).first(d => {
+                    if (d != null) {
+                        db.questions.update(d.id, { html: text }).then(function () {
+                            resolve(text);
+                        });
+                    } else {
+                        db.questions.put({ olid: $().getPara("olid"), html: text }).then(function (d) {
+                            resolve(text);
+                        })
+                    }
+                });
+
+            }
+            //db.close();
+        })
+    }));
+    //
 };
-
-
 

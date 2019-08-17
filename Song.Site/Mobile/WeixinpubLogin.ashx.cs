@@ -20,6 +20,10 @@ namespace Song.Site.Mobile
 
         protected override void InitPageTemplate(HttpContext context)
         {
+            //一些设置项
+            WeiSha.Common.CustomConfig config = CustomConfig.Load(this.Organ.Org_Config);
+            this.Document.SetValue("IsRegStudent", config["IsRegStudent"].Value.Boolean ?? true);   //是否允许注册   
+
             #region 此段代码用于取token与openid
             string code = WeiSha.Common.Request.QueryString["code"].String;
             if (Request.ServerVariables["REQUEST_METHOD"] == "GET" && !string.IsNullOrWhiteSpace(code))
@@ -97,7 +101,7 @@ namespace Song.Site.Mobile
             openid = "";
             try
             {
-                string retjson = WeiSha.Common.Request.WebResult(url);
+                string retjson = WeiSha.Common.Request.HttpGet(url);
                 JObject jo = (JObject)JsonConvert.DeserializeObject(retjson);
                 string errcode = jo["errcode"] != null ? jo["errcode"].ToString() : string.Empty;  //错误代码
                 string errmsg = jo["errmsg"] != null ? jo["errmsg"].ToString() : string.Empty;
@@ -140,7 +144,7 @@ namespace Song.Site.Mobile
             string userUrl = "https://api.weixin.qq.com/sns/userinfo?access_token={0}&openid={1}&lang=zh_CN";
             //string userUrl = "https://api.weixin.qq.com/cgi-bin/user/info?access_token={0}&openid={1}&lang=zh_CN";
             userUrl = string.Format(userUrl, access_token, openid);
-            string retjson = WeiSha.Common.Request.WebResult(userUrl);
+            string retjson = WeiSha.Common.Request.HttpGet(userUrl);
             unionid = string.Empty;
             //解析微信账户信息
             Song.Entities.Accounts acc = null;

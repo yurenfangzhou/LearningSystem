@@ -98,16 +98,25 @@ namespace Song.Site
             else
                 path = path.Substring(path.IndexOf("/") + 1);
             path = path.Replace("/", "\\");
+            //自定义配置项
+            WeiSha.Common.CustomConfig config = CustomConfig.Load(this.Organ.Org_Config);
+            bool isNoaccess = false;    //是否禁止访问
             //如果是手机端
             if (ismobi)
-            {
-                //仅限在微信中使用
-                if (this.Organ.Org_IsOnlyWeixin && (!WeiSha.Common.Browser.IsWeixin && !WeiSha.Common.Browser.IsAPICloud))
-                {
-                    //调取手机模板公共库中的OnlyWeixin.htm
-                    path = "OnlyWeixin";
-                }
+            {                
+                //如果禁止微信中使用，且又处于微信中时
+                if ((config["DisenableWeixin"].Value.Boolean ?? false) && WeiSha.Common.Browser.IsWeixin) isNoaccess = true;
+                if ((config["DisenableMini"].Value.Boolean ?? false) && WeiSha.Common.Browser.IsWeixinApp) isNoaccess = true;
+                if ((config["DisenableMweb"].Value.Boolean ?? false) && (!WeiSha.Common.Browser.IsAPICloud && !WeiSha.Common.Browser.IsWeixin))
+                    isNoaccess = true;
+                if ((config["DisenableAPP"].Value.Boolean ?? false) && WeiSha.Common.Browser.IsAPICloud) isNoaccess = true;                
             }
+            else
+            {
+                if ((config["WebForDeskapp"].Value.Boolean ?? false) && !WeiSha.Common.Browser.IsDestopApp) isNoaccess = true;
+            }
+            //如果被限制访问
+            if (isNoaccess) path = "Noaccess";
             return ismobi;
         }
         #region 初始化的操作
@@ -138,8 +147,15 @@ namespace Song.Site
             this.Session = context.Session;
 
             //机构信息
-            this.Organ = Business.Do<IOrganization>().OrganCurrent();
-            if (this.Organ == null) throw new Exception("机构不存在！");
+            try
+            {
+                this.Organ = Business.Do<IOrganization>().OrganCurrent();
+                if (this.Organ == null) throw new Exception("机构不存在！");
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
             //登录的信息
             if (Extend.LoginState.Accounts.IsLogin)
             {
@@ -192,6 +208,9 @@ namespace Song.Site
                 //手机端隐藏关于“充值收费”等资费相关信息
                 bool IsMobileRemoveMoney = config["IsMobileRemoveMoney"].Value.Boolean ?? false;
                 this.Document.SetValue("mremove", IsMobileRemoveMoney);
+                //电脑端隐藏资费
+                bool IsWebRemoveMoney = config["IsWebRemoveMoney"].Value.Boolean ?? false;
+                this.Document.SetValue("wremove", IsWebRemoveMoney);
 
             }
             catch { }

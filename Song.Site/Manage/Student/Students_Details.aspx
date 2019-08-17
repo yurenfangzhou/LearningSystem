@@ -7,7 +7,7 @@
 <%@ Register Assembly="WeiSha.WebEditor" Namespace="WeiSha.WebEditor" TagPrefix="WebEditor" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="cphMain" runat="server">
 <script type="text/javascript" src="/Utility/CoreScripts/jquery.qrcode.min.js"></script>
-
+<script type="text/javascript" src="/Manage/CoreScripts/jquery.jqprint-0.3.js"></script>
     <asp:DropDownList ID="ddlEducation" runat="server">
         <asp:ListItem Value="81">小学</asp:ListItem>
         <asp:ListItem Value="71">初中</asp:ListItem>
@@ -23,6 +23,7 @@
         <ItemTemplate>
             <div class="page">
                 <asp:Image ID="imgStamp" runat="server" />
+                <div class="qrcode" acid="<%# Eval("Ac_id") %>"></div>
                 <div class="page-title">
                     学习证明</div>
                 <table width="100%" class="first" border="1" cellspacing="0" cellpadding="0">
@@ -40,7 +41,7 @@
                             <%# Eval("Ac_sex", "{0}") == "0" ? "未知" : (Eval("Ac_sex", "{0}") == "1" ? "男" : "女")%>
                         </td>
                         <td rowspan="5" valign="middle" class="photo">
-                            <img src='<%# Eval("Ac_photo", "{0}") =="" ? "/manage/images/nophoto.gif" : Eval("Ac_photo", "{0}")%>'
+                            <img src='<%# Eval("Ac_photo", "{0}") =="" ? "/manage/images/nophoto.gif" : uppath+Eval("Ac_photo", "{0}")%>'
                                 width="150px" height="200px" />
                         </td>
                     </tr>
@@ -205,7 +206,7 @@
                                     <%= System.DateTime.Now.ToString("yyyy年M月d日") %>
                                 </div>
                             </div>
-                            <div class="qrcode" acid="<%# Eval("Ac_id") %>"></div>
+                            
                         </td>
                     </tr>
                 </table>
@@ -214,4 +215,5 @@
     </asp:Repeater>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="cphBtn" runat="server">
+<input type="button" name="btnPrint" value="打印" id="btnPrint"/>
 </asp:Content>

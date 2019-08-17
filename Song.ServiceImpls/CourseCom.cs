@@ -420,19 +420,19 @@ namespace Song.ServiceImpls
             if (pid > 0) wc.And(Course._.Cou_ID == pid);
             if (isUse != null) wc.And(Course._.Cou_IsUse == (bool)isUse);
             return Gateway.Default.From<Course>().Where(wc)
-                .OrderBy(Course._.Cou_Tax.Asc).ToList<Course>(count);
+                .OrderBy(Course._.Cou_Tax.Desc).ToList<Course>(count);
             //如果是采用多个教师对应一个课程，用下面的方法
             //count = count < 1 ? int.MaxValue : count;
             //if (thid < 1)
             //{
             //    WhereClip wc = Course._.Org_ID == orgid;
             //    if (isUse != null) wc.And(Course._.Cou_IsUse == (bool)isUse);
-            //    return Gateway.Default.From<Course>().Where(wc).OrderBy(Course._.Cou_Tax.Asc).ToList<Course>();
+            //    return Gateway.Default.From<Course>().Where(wc).OrderBy(Course._.Cou_Tax.Desc).ToList<Course>();
             //}
             //return Gateway.Default.From<Course>()
             //    .InnerJoin<Teacher_Course>(Teacher_Course._.Cou_ID == Course._.Cou_ID)
             //    .Where(Teacher_Course._.Th_ID == thid)
-            //    .OrderBy(Course._.Cou_Tax.Asc).ToList<Course>();
+            //    .OrderBy(Course._.Cou_Tax.Desc).ToList<Course>();
 
         }
         public List<Course> CourseCount(int orgid, int sbjid, string sear, bool? isUse, int count)
@@ -450,7 +450,7 @@ namespace Song.ServiceImpls
             if (!string.IsNullOrWhiteSpace(sear)) wc.And(Course._.Cou_Name.Like("%" + sear + "%"));
             if (isUse != null) wc.And(Course._.Cou_IsUse == (bool)isUse);
             return Gateway.Default.From<Course>().Where(wc)
-               .OrderBy(Course._.Cou_Tax.Asc).ToList<Course>(count);
+               .OrderBy(Course._.Cou_Tax.Desc).ToList<Course>(count);
         }
         /// <summary>
         /// 获取指定个数的课程列表
@@ -512,23 +512,23 @@ namespace Song.ServiceImpls
             if (!string.IsNullOrWhiteSpace(searTxt)) wc.And(Course._.Cou_Name.Like("%" + searTxt + "%"));
             if (thid > 0) wc.And(Course._.Th_ID == thid);
             countSum = Gateway.Default.Count<Course>(wc);
-            return Gateway.Default.From<Course>().Where(wc).OrderBy(Course._.Cou_Tax.Asc).ToList<Course>(size, (index - 1) * size);
+            return Gateway.Default.From<Course>().Where(wc).OrderBy(Course._.Cou_Tax.Desc).ToList<Course>(size, (index - 1) * size);
             //如果是采用多个教师对应一个课程，用下面的方法
             //if (thid < 1)
             //{
             //    countSum = Gateway.Default.Count<Course>(wc);
-            //    return Gateway.Default.From<Course>().Where(wc).OrderBy(Course._.Cou_Tax.Asc).ToList<Course>(size, (index - 1) * size);
+            //    return Gateway.Default.From<Course>().Where(wc).OrderBy(Course._.Cou_Tax.Desc).ToList<Course>(size, (index - 1) * size);
             //}
             //else
             //{
             //    countSum = Gateway.Default.From<Course>()
             //        .InnerJoin<Teacher_Course>(Teacher_Course._.Cou_ID == Course._.Cou_ID)
             //        .Where(Teacher_Course._.Th_ID == thid)
-            //        .OrderBy(Course._.Cou_Tax.Asc).Count();
+            //        .OrderBy(Course._.Cou_Tax.Desc).Count();
             //    return Gateway.Default.From<Course>()
             //        .InnerJoin<Teacher_Course>(Teacher_Course._.Cou_ID == Course._.Cou_ID)
             //        .Where(Teacher_Course._.Th_ID == thid)
-            //        .OrderBy(Course._.Cou_Tax.Asc).ToList<Course>(size, (index - 1) * size);
+            //        .OrderBy(Course._.Cou_Tax.Desc).ToList<Course>(size, (index - 1) * size);
             //}
         }
         public List<Course> CoursePager(int orgid, int sbjid, int thid, bool? isUse, string searTxt, string order, int size, int index, out int countSum)
@@ -548,10 +548,10 @@ namespace Song.ServiceImpls
             countSum = Gateway.Default.Count<Course>(wc);
             OrderByClip wcOrder = new OrderByClip();
             if (order == "flux") wcOrder = Course._.Cou_ViewNum.Desc;
-            if (order == "def") wcOrder = Course._.Cou_IsRec.Desc & Course._.Cou_ViewNum.Asc;
-            if (order == "tax") wcOrder = Course._.Cou_Tax.Asc & Course._.Cou_CrtTime.Desc;
+            if (order == "def") wcOrder = Course._.Cou_IsRec.Desc && Course._.Cou_ViewNum.Asc;
+            if (order == "tax") wcOrder = Course._.Cou_Tax.Desc && Course._.Cou_CrtTime.Desc;
             if (order == "new") wcOrder = Course._.Cou_CrtTime.Desc;    //最新发布
-            if (order == "rec") wcOrder = Course._.Cou_IsRec.Desc & Course._.Cou_Tax.Asc & Course._.Cou_CrtTime.Desc;
+            if (order == "rec") wcOrder = Course._.Cou_IsRec.Desc && Course._.Cou_Tax.Desc && Course._.Cou_CrtTime.Desc;
             return Gateway.Default.From<Course>().Where(wc).OrderBy(wcOrder).ToList<Course>(size, (index - 1) * size);
         }
         /// <summary>
@@ -578,6 +578,10 @@ namespace Song.ServiceImpls
                     int.TryParse(tm, out sbj);
                     if (sbj == 0) continue;
                     wcSbjid.Or(Course._.Sbj_ID == sbj);
+                    //当前专业的下级专业也包括
+                    List<int> list = Business.Do<ISubject>().TreeID(sbj);
+                    foreach (int l in list)
+                        wcSbjid.Or(Course._.Sbj_ID == l);
                 }               
                 wc.And(wcSbjid);
             }           
@@ -586,11 +590,15 @@ namespace Song.ServiceImpls
             countSum = Gateway.Default.Count<Course>(wc);
             OrderByClip wcOrder = new OrderByClip();
             if (order == "flux") wcOrder = Course._.Cou_ViewNum.Desc;
-            if (order == "def") wcOrder = Course._.Cou_IsRec.Desc & Course._.Cou_ViewNum.Asc;
-            if (order == "tax") wcOrder = Course._.Cou_Tax.Desc & Course._.Cou_CrtTime.Desc;
+            if (order == "def") wcOrder = Course._.Cou_IsRec.Desc && Course._.Cou_ViewNum.Asc;
+            if (order == "tax") wcOrder = Course._.Cou_Tax.Desc && Course._.Cou_CrtTime.Desc;
             if (order == "new") wcOrder = Course._.Cou_CrtTime.Desc;    //最新发布
-            if (order == "rec") wcOrder = Course._.Cou_IsRec.Desc & Course._.Cou_Tax.Asc & Course._.Cou_CrtTime.Desc;
-            if (order == "free") wcOrder = Course._.Cou_IsFree.Desc & Course._.Cou_Tax.Desc;
+            if (order == "rec") wcOrder = Course._.Cou_IsRec.Desc && Course._.Cou_Tax.Desc && Course._.Cou_CrtTime.Desc;
+            if (order == "free")
+            {
+                wc.And(Course._.Cou_IsFree == true);
+                wcOrder = Course._.Cou_IsFree.Desc & Course._.Cou_Tax.Desc;
+            }
             return Gateway.Default.From<Course>().Where(wc).OrderBy(wcOrder).ToList<Course>(size, (index - 1) * size);
         }
         /// <summary>
@@ -630,7 +638,8 @@ namespace Song.ServiceImpls
                 {
                     tran.Close();
                 }
-            }
+            }            
+           
         }
         /// <summary>
         /// 将当前项目向下移动；仅在当前对象的同层移动，即同一父节点下的对象向后移动；
@@ -1086,7 +1095,7 @@ namespace Song.ServiceImpls
             return Gateway.Default.From<Course>()
                     .InnerJoin<Teacher_Course>(Teacher_Course._.Cou_ID == Course._.Cou_ID)
                     .Where(Teacher_Course._.Th_ID == thid)
-                    .OrderBy(Course._.Cou_Tax.Asc).ToList<Course>(count);
+                    .OrderBy(Course._.Cou_Tax.Desc).ToList<Course>(count);
         }
         /// <summary>
         /// 学习某个课程的学员
@@ -1101,8 +1110,15 @@ namespace Song.ServiceImpls
         public Accounts[] Student4Course(int couid, string stname, string stmobi, int size, int index, out int countSum)
         {
             WhereClip wc = Student_Course._.Cou_ID == couid;
+
             if (!string.IsNullOrWhiteSpace(stname) && stname.Trim() != "") wc.And(Accounts._.Ac_Name.Like("%" + stname + "%"));
-            if (!string.IsNullOrWhiteSpace(stmobi) && stmobi.Trim() != "") wc.And(Accounts._.Ac_AccName.Like("%" + stmobi + "%"));
+            if (!string.IsNullOrWhiteSpace(stmobi) && stmobi.Trim() != "")
+            {
+                WhereClip wcOr = new WhereClip();              
+                wcOr.Or(Accounts._.Ac_MobiTel1.Like("%" + stmobi + "%"));
+                wcOr.Or(Accounts._.Ac_MobiTel2.Like("%" + stmobi + "%"));
+                wc.And(wcOr);
+            }            
             countSum = Gateway.Default.From<Accounts>().InnerJoin<Student_Course>(Student_Course._.Ac_ID == Accounts._.Ac_ID)
                    .Where(wc).OrderBy(Accounts._.Ac_LastTime.Desc).Count();
 

@@ -29,11 +29,19 @@ using Song.ServiceInterfaces;
 /// </summary>
 public partial class Alipayweb_return_url : System.Web.UI.Page
 {
+    //返回的参数
+    public string return_para = "type=2&sccess={0}&money={1}&paiid={2}";
     protected void Page_Load(object sender, EventArgs e)
     {
-        string return_url = "/default.ashx";
-        SortedDictionary<string, string> sPara = GetRequestGet();
+        //输出获取的参数
+        string query = string.Empty;
+        for (int i = 0; i < Request.QueryString.Count; i++)
+        {
+            query += Request.QueryString.Keys[i].ToString() + " = " + Request.QueryString[i].ToString() + ";";
+        }
+        WeiSha.Common.Log.Debug("Alipay.web_return_url", query);
 
+        SortedDictionary<string, string> sPara = GetRequestGet();
         if (sPara.Count > 0)//判断是否有带返回参数
         {
             //商户订单号
@@ -41,7 +49,7 @@ public partial class Alipayweb_return_url : System.Web.UI.Page
             Song.Entities.MoneyAccount maccount = Business.Do<IAccounts>().MoneySingle(out_trade_no);
             if (maccount == null)
             {
-                Response.Redirect(string.Format(return_url, false, "", ""));
+                return_para = string.Format(return_para, false, "", "");
                 return;
             }
             Notify aliNotify = new Notify(maccount.Pai_ID);
@@ -80,7 +88,7 @@ public partial class Alipayweb_return_url : System.Web.UI.Page
                 maccount.Ma_Buyer = Request.QueryString["buyer_email"];
                 maccount.Ma_Seller = Request.QueryString["seller_email"];
                 Business.Do<IAccounts>().MoneyConfirm(maccount);
-                Response.Redirect(string.Format(return_url, true, maccount.Ma_Money, maccount.Pai_ID));
+                return_para = string.Format(return_para, true, maccount.Ma_Money, maccount.Pai_ID);
 
                 //——请根据您的业务逻辑来编写程序（以上代码仅作参考）——
 
@@ -88,7 +96,7 @@ public partial class Alipayweb_return_url : System.Web.UI.Page
             }
             else//验证失败
             {
-                Response.Write("验证失败");
+                return_para = string.Format(return_para, false, maccount.Ma_Money, maccount.Pai_ID);
             }
         }
         else

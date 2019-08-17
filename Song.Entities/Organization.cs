@@ -104,7 +104,7 @@ namespace Song.Entities {
     		
     		protected String _Org_QrCode;
     		
-    		protected Boolean _Org_IsOnlyWeixin;
+    		protected String _Org_GonganBeian;
     		
     		/// <summary>
     		/// -1
@@ -655,13 +655,13 @@ namespace Song.Entities {
     			}
     		}
     		
-    		public Boolean Org_IsOnlyWeixin {
+    		public String Org_GonganBeian {
     			get {
-    				return this._Org_IsOnlyWeixin;
+    				return this._Org_GonganBeian;
     			}
     			set {
-    				this.OnPropertyValueChange(_.Org_IsOnlyWeixin, _Org_IsOnlyWeixin, value);
-    				this._Org_IsOnlyWeixin = value;
+    				this.OnPropertyValueChange(_.Org_GonganBeian, _Org_GonganBeian, value);
+    				this._Org_GonganBeian = value;
     			}
     		}
     		
@@ -740,7 +740,7 @@ namespace Song.Entities {
     					_.Org_IsShow,
     					_.Org_ICP,
     					_.Org_QrCode,
-    					_.Org_IsOnlyWeixin};
+    					_.Org_GonganBeian};
     		}
     		
     		/// <summary>
@@ -796,7 +796,7 @@ namespace Song.Entities {
     					this._Org_IsShow,
     					this._Org_ICP,
     					this._Org_QrCode,
-    					this._Org_IsOnlyWeixin};
+    					this._Org_GonganBeian};
     		}
     		
     		/// <summary>
@@ -947,8 +947,8 @@ namespace Song.Entities {
     			if ((false == reader.IsDBNull(_.Org_QrCode))) {
     				this._Org_QrCode = reader.GetString(_.Org_QrCode);
     			}
-    			if ((false == reader.IsDBNull(_.Org_IsOnlyWeixin))) {
-    				this._Org_IsOnlyWeixin = reader.GetBoolean(_.Org_IsOnlyWeixin);
+    			if ((false == reader.IsDBNull(_.Org_GonganBeian))) {
+    				this._Org_GonganBeian = reader.GetString(_.Org_GonganBeian);
     			}
     		}
     		
@@ -1217,9 +1217,9 @@ namespace Song.Entities {
     			public static WeiSha.Data.Field Org_QrCode = new WeiSha.Data.Field<Organization>("Org_QrCode");
     			
     			/// <summary>
-    			/// 字段名：Org_IsOnlyWeixin - 数据类型：Boolean
+    			/// 字段名：Org_GonganBeian - 数据类型：String
     			/// </summary>
-    			public static WeiSha.Data.Field Org_IsOnlyWeixin = new WeiSha.Data.Field<Organization>("Org_IsOnlyWeixin");
+    			public static WeiSha.Data.Field Org_GonganBeian = new WeiSha.Data.Field<Organization>("Org_GonganBeian");
     		}
     	}
     }

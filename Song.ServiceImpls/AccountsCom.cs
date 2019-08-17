@@ -68,6 +68,13 @@ namespace Song.ServiceImpls
         /// <returns>如果已经存在该账户，则返回-1</returns>
         public int AccountsAdd(Accounts entity)
         {
+            if(!string.IsNullOrWhiteSpace(entity.Ac_IDCardNumber))
+                entity.Ac_IDCardNumber = entity.Ac_IDCardNumber.Trim();
+            //如果账号为空
+            if (string.IsNullOrWhiteSpace(entity.Ac_AccName))
+                throw new Exception("账号不得为空！");    
+            else
+                entity.Ac_AccName = entity.Ac_AccName.Trim();
             entity.Ac_RegTime = entity.Ac_LastTime = DateTime.Now;
             entity.Ac_IsUse = true;
             if (entity.Org_ID < 1)
@@ -80,9 +87,7 @@ namespace Song.ServiceImpls
             //计算年龄，如果设置了生日，则自动计算出生年月
             if (entity.Ac_Birthday > DateTime.Now.AddYears(-100))
                 entity.Ac_Age = entity.Ac_Birthday.Year;
-            //如果账号为空
-            if (string.IsNullOrWhiteSpace(entity.Ac_AccName))            
-                throw new Exception("账号不得为空！");           
+                  
             //如果密码为空
             if (string.IsNullOrWhiteSpace(entity.Ac_Pw))
                 entity.Ac_Pw = WeiSha.Common.Login.Get["Accounts"].DefaultPw.MD5;
@@ -116,8 +121,8 @@ namespace Song.ServiceImpls
                     //if (old != null && old.Sts_ID != entity.Sts_ID)
                     //{
                         //同步考试成绩中的学员组
-                        tran.Update<ExamResults>(new Field[] { ExamResults._.Sts_ID },
-                        new object[] { entity.Sts_ID }, ExamResults._.Ac_ID == entity.Ac_ID);
+                    tran.Update<ExamResults>(new Field[] { ExamResults._.Sts_ID, ExamResults._.Ac_Sex, ExamResults._.Ac_Name, ExamResults._.Ac_IDCardNumber },
+                        new object[] { entity.Sts_ID, entity.Ac_Sex, entity.Ac_Name, entity.Ac_IDCardNumber }, ExamResults._.Ac_ID == entity.Ac_ID);
                         //同步教师信息
                         tran.Update<Teacher>(new Field[] { Teacher._.Th_Sex, Teacher._.Th_Birthday, Teacher._.Th_IDCardNumber, Teacher._.Th_Nation, Teacher._.Th_Native },
                         new object[] { entity.Ac_Sex, entity.Ac_Birthday, entity.Ac_IDCardNumber, entity.Ac_Nation, entity.Ac_Native }, Teacher._.Ac_ID == entity.Ac_ID);
@@ -294,6 +299,21 @@ namespace Song.ServiceImpls
             return _acc_init(ac);
         }
         /// <summary>
+        /// 通过姓名获取账号
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public Accounts[] Account4Name(string name)
+        {
+            WhereClip wc = new WhereClip();
+            if (string.IsNullOrWhiteSpace(name)) return null;
+            wc.And(Accounts._.Ac_Name.Like("%" + name + "%"));
+            Accounts[] accs = Gateway.Default.From<Accounts>().Where(wc).OrderBy(Accounts._.Ac_RegTime.Desc).ToArray<Accounts>();
+            foreach (Song.Entities.Accounts ac in accs)
+                _acc_init(ac);
+            return accs;
+        }
+        /// <summary>
         /// 通过QQ的openid获取账户
         /// </summary>
         /// <param name="qqopenid"></param>
@@ -420,12 +440,16 @@ namespace Song.ServiceImpls
         /// <returns></returns>
         public Accounts IsAccountsExist(int orgid, Accounts enity)
         {
-            WhereClip wc = new WhereClip();
+            WhereClip wc = Accounts._.Ac_ID != enity.Ac_ID;
             if (orgid > 0) wc &= Accounts._.Org_ID == orgid;
-            wc |= Accounts._.Ac_AccName == enity.Ac_AccName;
-            wc |= Accounts._.Ac_MobiTel1 == enity.Ac_MobiTel1;
+            WhereClip orWc = new WhereClip();
+            orWc |= Accounts._.Ac_AccName == enity.Ac_AccName;
+            if(!string.IsNullOrWhiteSpace(enity.Ac_IDCardNumber))
+                orWc |= Accounts._.Ac_IDCardNumber == enity.Ac_IDCardNumber;
+            if (!string.IsNullOrWhiteSpace(enity.Ac_MobiTel1))
+                orWc |= Accounts._.Ac_MobiTel1 == enity.Ac_MobiTel1;
             Accounts mm = Gateway.Default.From<Accounts>()
-                .Where(wc && Accounts._.Ac_ID != enity.Ac_ID).ToFirst<Accounts>();
+                .Where(wc && orWc).ToFirst<Accounts>();
             return _acc_init(mm);
         }
         /// <summary>
@@ -518,7 +542,8 @@ namespace Song.ServiceImpls
         /// <returns></returns>
         public Accounts[] AccountsPager(int orgid, int size, int index, out int countSum)
         {
-            WhereClip wc = Accounts._.Org_ID == orgid;
+            WhereClip wc = new WhereClip();
+            if (orgid > 0) wc.And(Accounts._.Org_ID == orgid);
             countSum = Gateway.Default.Count<Accounts>(wc);
             Accounts[] accs = Gateway.Default.From<Accounts>().Where(wc).OrderBy(Accounts._.Ac_RegTime.Desc).ToArray<Accounts>(size, (index - 1) * size);
             foreach (Song.Entities.Accounts ac in accs)

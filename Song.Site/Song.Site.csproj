@@ -37,6 +37,7 @@
     <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <FilesToIncludeForPublish>OnlyFilesToRunTheApp</FilesToIncludeForPublish>
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -220,6 +221,8 @@
     <Content Include="Debug.aspx" />
     <Content Include="Debug.htm" />
     <Content Include="Default.aspx" />
+    <Content Include="Download\App.aspx" />
+    <Content Include="Download\DesktopApp\readme.txt" />
     <Content Include="favicon.ico" />
     <Content Include="License.aspx" />
     <Content Include="Manage\Admin\Courses.aspx" />
@@ -251,6 +254,7 @@
     <Content Include="Manage\Admin\Setup_Qrcode.aspx" />
     <Content Include="Manage\Admin\Styles\Setup_Stamp.css" />
     <Content Include="Manage\Admin\Students_Courses.aspx" />
+    <Content Include="Manage\Admin\Courses_Students.aspx" />
     <Content Include="Manage\Card\Learningcard.aspx" />
     <Content Include="Manage\Card\Learningcard_Edit.aspx" />
     <Content Include="Manage\Card\Learningcard_Code.aspx" />
@@ -271,6 +275,7 @@
     <Content Include="Manage\CoreScripts\clipboard.min.js" />
     <Content Include="Manage\CoreScripts\Extend.js" />
     <Content Include="Manage\CoreScripts\GridView.js" />
+    <Content Include="Manage\CoreScripts\jquery.jqprint-0.3.js" />
     <Content Include="Manage\CoreScripts\jquery.js" />
     <Content Include="Manage\CoreScripts\MessageBox.js" />
     <Content Include="Manage\Course\Courses.aspx" />
@@ -474,6 +479,7 @@
     <Content Include="Manage\Student\Course_Expire.aspx" />
     <Content Include="Manage\Student\LearningCardView.aspx" />
     <Content Include="Manage\Styles\Jme.css" />
+    <Content Include="Manage\Styles\Jme\Symbola.svg" />
     <Content Include="Manage\Sys\LimitDomain.aspx" />
     <Content Include="Manage\Sys\LimitDomain_Edit.aspx" />
     <Content Include="Manage\Admin\StOnline.aspx" />
@@ -496,6 +502,7 @@
     <Content Include="Manage\Sys\ProfitSharing.aspx" />
     <Content Include="Manage\Sys\ProfitSharing_Edit.aspx" />
     <Content Include="Manage\Sys\Styles\ProfitSharing_Edit.css" />
+    <Content Include="Manage\Sys\Styles\OtherLogin.css" />
     <Content Include="Manage\Teacher\Archives.aspx" />
     <Content Include="Manage\Teacher\Courses.aspx" />
     <Content Include="Manage\Teacher\List.aspx" />
@@ -674,6 +681,7 @@
     <Content Include="Templates\Mobi\Default2019\CoreScripts\ajaxfileupload.js" />
     <Content Include="Templates\Mobi\Default2019\CoreScripts\AutoLoyout.js" />
     <Content Include="Templates\Mobi\Default2019\CoreScripts\Base64.js" />
+    <Content Include="Templates\Mobi\Default2019\CoreScripts\dexie.min.js" />
     <Content Include="Templates\Mobi\Default2019\CoreScripts\Extend.js" />
     <Content Include="Templates\Mobi\Default2019\CoreScripts\jquery.touchSwipe.min.js" />
     <Content Include="Templates\Mobi\Default2019\CoreScripts\MsgBox.js" />
@@ -722,6 +730,8 @@
     <Content Include="Templates\Mobi\Default2019\Images\btnBack.jpg" />
     <Content Include="Templates\Mobi\Default2019\Images\cou-nophoto.png" />
     <Content Include="Templates\Mobi\Default2019\Images\cou_nophoto.jpg" />
+    <Content Include="Templates\Mobi\Default2019\Images\head1.jpg" />
+    <Content Include="Templates\Mobi\Default2019\Images\head2.jpg" />
     <Content Include="Templates\Mobi\Default2019\Images\line.jpg" />
     <Content Include="Templates\Mobi\Default2019\Images\load_015.gif" />
     <Content Include="Templates\Mobi\Default2019\Images\load_016.gif" />
@@ -916,6 +926,7 @@
     <Content Include="Templates\Mobi\Default2019\TestView.htm" />
     <Content Include="Templates\Mobi\Default2019\_self.xml" />
     <Content Include="Templates\Mobi\Default2019\MyFriends.htm" />
+    <Content Include="Templates\Mobi\Default2019\QuesExercisesItems.htm" />
     <Content Include="Templates\Mobi\_Public\ExamReview.htm" />
     <Content Include="Templates\Mobi\_Public\Images\01_qq_logo.png" />
     <Content Include="Templates\Mobi\_Public\Images\load_023.gif" />
@@ -933,14 +944,17 @@
     <Content Include="Templates\Mobi\_Public\Styles\QQLogin.css" />
     <Content Include="Templates\Mobi\_Public\Styles\WeixinpubLogin.css" />
     <Content Include="Templates\Mobi\_Public\Styles\Certify.css" />
+    <Content Include="Templates\Mobi\_Public\Styles\Yunzhijia.css" />
     <Content Include="Templates\Mobi\_Public\WeixinpubLogin.htm" />
     <Content Include="Templates\Mobi\_Public\_self.xml" />
-    <Content Include="Templates\Mobi\_Public\OnlyWeixin.htm" />
+    <Content Include="Templates\Mobi\_Public\Noaccess.htm" />
     <Content Include="Templates\Mobi\_Public\Certify.htm" />
+    <Content Include="Templates\Mobi\_Public\Yunzhijia.htm" />
     <Content Include="Templates\Web\Gov\Conn.htm" />
     <Content Include="Templates\Web\Gov\CourseChannel.htm" />
     <Content Include="Templates\Web\Gov\Images\cou_nophoto.jpg" />
     <Content Include="Templates\Web\Gov\Images\Flvplayer.swf" />
+    <Content Include="Templates\Web\Gov\Images\ghs.png" />
     <Content Include="Templates\Web\Gov\Images\nosubject.jpg" />
     <Content Include="Templates\Web\Gov\Images\QQ-weixin.png" />
     <Content Include="Templates\Web\Gov\Images\teacher-banner.jpg" />
@@ -963,6 +977,7 @@
     <Content Include="Templates\Web\Neimeng\Images\alpha.png" />
     <Content Include="Templates\Web\Neimeng\Images\cou_nophoto.jpg" />
     <Content Include="Templates\Web\Neimeng\Images\dot.png" />
+    <Content Include="Templates\Web\Neimeng\Images\ghs.png" />
     <Content Include="Templates\Web\Neimeng\Images\nosubject.jpg" />
     <Content Include="Templates\Web\Neimeng\Images\QQ-weixin.png" />
     <Content Include="Templates\Web\Neimeng\Images\teacher-banner.jpg" />
@@ -985,6 +1000,7 @@
     <Content Include="Templates\Web\NetSchool\CourseChannel.htm" />
     <Content Include="Templates\Web\NetSchool\Images\bar01.jpg" />
     <Content Include="Templates\Web\NetSchool\Images\cou_nophoto.jpg" />
+    <Content Include="Templates\Web\NetSchool\Images\ghs.png" />
     <Content Include="Templates\Web\NetSchool\Images\gonggao-bg.jpg" />
     <Content Include="Templates\Web\NetSchool\Images\more.png" />
     <Content Include="Templates\Web\NetSchool\Images\nosubject.jpg" />
@@ -1116,9 +1132,6 @@
     <Content Include="Templates\Web\Gov\Inc\Footer.html" />
     <Content Include="Templates\Web\Gov\Inc\Header.html" />
     <Content Include="Templates\Web\Gov\Inc\Login.html" />
-    <Content Include="Templates\Web\Gov\Knowledge.htm" />
-    <Content Include="Templates\Web\Gov\Knowledges.htm" />
-    <Content Include="Templates\Web\Gov\KnowledgesList.htm" />
     <Content Include="Templates\Web\Gov\Links.htm" />
     <Content Include="Templates\Web\Gov\logo.jpg" />
     <Content Include="Templates\Web\Gov\MessageBoards.htm" />
@@ -1133,8 +1146,6 @@
     <Content Include="Templates\Web\Gov\Scripts\Default.js" />
     <Content Include="Templates\Web\Gov\Scripts\Exam.js" />
     <Content Include="Templates\Web\Gov\Scripts\jquery.luara.0.0.1.min.js" />
-    <Content Include="Templates\Web\Gov\Scripts\Knowledges.js" />
-    <Content Include="Templates\Web\Gov\Scripts\KnowledgesList.js" />
     <Content Include="Templates\Web\Gov\Scripts\lrtk.js" />
     <Content Include="Templates\Web\Gov\Scripts\Mask.js" />
     <Content Include="Templates\Web\Gov\CoreScripts\Public.js" />
@@ -1150,11 +1161,9 @@
     <Content Include="Templates\Web\Gov\Student\Panel.htm" />
     <Content Include="Templates\Web\Gov\Student\PwFind.htm" />
     <Content Include="Templates\Web\Gov\Student\Scripts\Index.js" />
-    <Content Include="Templates\Web\Gov\Student\Startpage.htm" />
     <Content Include="Templates\Web\Gov\Student\Styles\index.css" />
     <Content Include="Templates\Web\Gov\Student\Styles\Panel.css" />
     <Content Include="Templates\Web\Gov\Student\Styles\PwFind.css" />
-    <Content Include="Templates\Web\Gov\Student\Styles\Startpage.css" />
     <Content Include="Templates\Web\Gov\Styles\about.css" />
     <Content Include="Templates\Web\Gov\Styles\article.css" />
     <Content Include="Templates\Web\Gov\Styles\Contactus.css" />
@@ -1175,9 +1184,6 @@
     <Content Include="Templates\Web\Gov\Styles\examico\examico.css" />
     <Content Include="Templates\Web\Gov\Styles\examico\examico.svg" />
     <Content Include="Templates\Web\Gov\Styles\Exercises.css" />
-    <Content Include="Templates\Web\Gov\Styles\Knowledge.css" />
-    <Content Include="Templates\Web\Gov\Styles\Knowledges.css" />
-    <Content Include="Templates\Web\Gov\Styles\KnowledgesList.css" />
     <Content Include="Templates\Web\Gov\Styles\Links.css" />
     <Content Include="Templates\Web\Gov\Styles\lunhuan\luara.css" />
     <Content Include="Templates\Web\Gov\Styles\lunhuan\luara.left.css" />
@@ -1263,6 +1269,7 @@
     <Content Include="Templates\Web\School\Conn.htm" />
     <Content Include="Templates\Web\School\Images\bar01.jpg" />
     <Content Include="Templates\Web\School\Images\cou_nophoto.jpg" />
+    <Content Include="Templates\Web\School\Images\ghs.png" />
     <Content Include="Templates\Web\School\Images\gonggao-bg.jpg" />
     <Content Include="Templates\Web\School\Images\icon03.jpg" />
     <Content Include="Templates\Web\School\Images\more.png" />
@@ -1280,7 +1287,10 @@
     <Content Include="Templates\Web\School\CourseChannel.htm" />
     <Content Include="Templates\Web\School\Styles\CourseChannel.css" />
     <Content Include="Templates\Web\_Public\CoreScripts\ajaxfileupload.js" />
+    <Content Include="Templates\Web\_Public\CoreScripts\dexie.js" />
+    <Content Include="Templates\Web\_Public\CoreScripts\Node.js" />
     <Content Include="Templates\Web\_Public\CoreScripts\Public.js" />
+    <Content Include="Templates\Web\_Public\CoreScripts\Tree.js" />
     <Content Include="Templates\Web\_Public\Examing.htm" />
     <Content Include="Templates\Web\_Public\Admin\Startpage.htm" />
     <Content Include="Templates\Web\_Public\Admin\Styles\Startpage.css" />
@@ -1327,9 +1337,10 @@
     <Content Include="Templates\Web\NetSchool\Inc\Footer.html" />
     <Content Include="Templates\Web\NetSchool\Inc\Header.html" />
     <Content Include="Templates\Web\NetSchool\Inc\Header-home.html" />
-    <Content Include="Templates\Web\NetSchool\Knowledge.htm" />
-    <Content Include="Templates\Web\NetSchool\Knowledges.htm" />
-    <Content Include="Templates\Web\NetSchool\KnowledgesList.htm" />
+    <Content Include="Templates\Web\_Public\Inc\meta_api.inc" />
+    <Content Include="Templates\Web\_Public\Knowledge.htm" />
+    <Content Include="Templates\Web\_Public\Knowledges.htm" />
+    <Content Include="Templates\Web\_Public\KnowledgesList.htm" />
     <Content Include="Templates\Web\NetSchool\Links.htm" />
     <Content Include="Templates\Web\NetSchool\logo.jpg" />
     <Content Include="Templates\Web\NetSchool\MessageBoards.htm" />
@@ -1363,6 +1374,8 @@
     <Content Include="Templates\Web\_Public\Images\submit2.gif" />
     <Content Include="Templates\Web\_Public\Images\success.png" />
     <Content Include="Templates\Web\_Public\Images\tk_exam.png" />
+    <Content Include="Templates\Web\_Public\Inc\Footer.html" />
+    <Content Include="Templates\Web\_Public\indexDb.htm" />
     <Content Include="Templates\Web\_Public\Module\Accounts\Login.css" />
     <Content Include="Templates\Web\_Public\Module\Accounts\Login.htm" />
     <Content Include="Templates\Web\_Public\Module\Accounts\Login.js" />
@@ -1385,6 +1398,9 @@
     <Content Include="Templates\Web\_Public\Module\Course\Subject-bar.htm" />
     <Content Include="Templates\Web\_Public\Module\Course\Subject-bar.css" />
     <Content Include="Templates\Web\_Public\Module\Course\Subject-bar.js" />
+    <Content Include="Templates\Web\_Public\Module\Teacher\Register.css" />
+    <Content Include="Templates\Web\_Public\Module\Teacher\Register.htm" />
+    <Content Include="Templates\Web\_Public\Module\Teacher\Register.js" />
     <Content Include="Templates\Web\_Public\Module\Test\TestScene.css" />
     <Content Include="Templates\Web\_Public\Module\Test\TestScene.htm" />
     <Content Include="Templates\Web\_Public\Module\Test\TestScene.js" />
@@ -1402,8 +1418,8 @@
     <Content Include="Templates\Web\_Public\Scripts\Examing.js" />
     <Content Include="Templates\Web\_Public\Scripts\ExamReview.js" />
     <Content Include="Templates\Web\_Public\Scripts\Exercises.js" />
-    <Content Include="Templates\Web\NetSchool\Scripts\Knowledges.js" />
-    <Content Include="Templates\Web\NetSchool\Scripts\KnowledgesList.js" />
+    <Content Include="Templates\Web\_Public\Scripts\Knowledges.js" />
+    <Content Include="Templates\Web\_Public\Scripts\KnowledgesList.js" />
     <Content Include="Templates\Web\NetSchool\Scripts\Mask.js" />
     <Content Include="Templates\Web\_Public\Module\Admin\Login.htm" />
     <Content Include="Templates\Web\_Public\Module\Admin\Login.css" />
@@ -1435,11 +1451,11 @@
     <Content Include="Templates\Web\NetSchool\Student\Scripts\Index.js" />
     <Content Include="Templates\Web\NetSchool\Student\PwFind.htm" />
     <Content Include="Templates\Web\NetSchool\Student\Scripts\Register.js" />
-    <Content Include="Templates\Web\NetSchool\Student\Startpage.htm" />
+    <Content Include="Templates\Web\_Public\Student\Startpage.htm" />
     <Content Include="Templates\Web\NetSchool\Student\Styles\index.css" />
     <Content Include="Templates\Web\NetSchool\Student\Styles\Panel.css" />
     <Content Include="Templates\Web\NetSchool\Student\Styles\PwFind.css" />
-    <Content Include="Templates\Web\NetSchool\Student\Styles\Startpage.css" />
+    <Content Include="Templates\Web\_Public\Student\Styles\Startpage.css" />
     <Content Include="Templates\Web\NetSchool\Student\Register.htm" />
     <Content Include="Templates\Web\NetSchool\Student\Styles\Register.css" />
     <Content Include="Templates\Web\NetSchool\Styles\About.css" />
@@ -1453,19 +1469,54 @@
     <Content Include="Templates\Web\_Public\Styles\examing.css" />
     <Content Include="Templates\Web\_Public\Styles\ExamReview.css" />
     <Content Include="Templates\Web\_Public\Styles\Exercises.css" />
-    <Content Include="Templates\Web\NetSchool\Styles\Knowledge.css" />
-    <Content Include="Templates\Web\NetSchool\Styles\Knowledges.css" />
-    <Content Include="Templates\Web\NetSchool\Styles\KnowledgesList.css" />
+    <Content Include="Templates\Web\_Public\Styles\Knowledge.css" />
+    <Content Include="Templates\Web\_Public\Styles\Knowledges.css" />
+    <Content Include="Templates\Web\_Public\Styles\KnowledgesList.css" />
     <Content Include="Templates\Web\NetSchool\Styles\Links.css" />
     <Content Include="Templates\Web\NetSchool\Styles\MessageBoards.css" />
     <Content Include="Templates\Web\_Public\Pagebox.htm" />
+    <Content Include="Templates\Web\_Public\Noaccess.htm" />
+    <Content Include="Templates\Web\_Public\Styles\Noaccess.css" />
+    <Content Include="Templates\Web\_Public\Debug.htm" />
+    <Content Include="Utility\CkplayerX1\ckplayer\ckplayer.js" />
+    <Content Include="Utility\CkplayerX1\ckplayer\ckplayer.min.js" />
+    <Content Include="Utility\CkplayerX1\ckplayer\ckplayer.swf" />
+    <Content Include="Utility\CkplayerX1\ckplayer\ckplayer.xml" />
+    <Content Include="Utility\CkplayerX1\ckplayer\hls\hls.js" />
+    <Content Include="Utility\CkplayerX1\ckplayer\hls\hls.min.js" />
+    <Content Include="Utility\CkplayerX1\ckplayer\language.xml" />
+    <Content Include="Utility\CkplayerX1\ckplayer\style.xml" />
+    <Content Include="Utility\CkplayerX1\crossdomain.xml" />
+    <Content Include="Utility\CkplayerX1\index.html" />
+    <Content Include="Utility\CkplayerX1\material\logo.png" />
+    <Content Include="Utility\CkplayerX1\material\mydream_en1800_1010_01.png" />
+    <Content Include="Utility\CkplayerX1\material\mydream_en1800_1010_02.png" />
+    <Content Include="Utility\CkplayerX1\material\poster.jpg" />
+    <Content Include="Utility\CkplayerX1\sample\adother.html" />
+    <Content Include="Utility\CkplayerX1\sample\dm.html" />
+    <Content Include="Utility\CkplayerX1\sample\flashplayer.html" />
+    <Content Include="Utility\CkplayerX1\sample\h5.html" />
+    <Content Include="Utility\CkplayerX1\sample\iframe.html" />
+    <Content Include="Utility\CkplayerX1\sample\index.html" />
+    <Content Include="Utility\CkplayerX1\sample\ios.html" />
+    <Content Include="Utility\CkplayerX1\sample\rtmp.html" />
+    <Content Include="Utility\CkplayerX1\sample\hls.html" />
+    <Content Include="Utility\CkplayerX1\请看一下.txt" />
     <Content Include="Utility\Ckplayer\ckplayer\ckplayer_h5.js" />
+    <Content Include="Utility\Copyright.xsl" />
+    <Content Include="Utility\CoreScripts\api.js" />
+    <Content Include="Utility\CoreScripts\axios.min.js" />
+    <Content Include="Utility\CoreScripts\axios_min.js" />
     <Content Include="Utility\CoreScripts\easydrag.js" />
     <Content Include="Utility\CoreScripts\hanzi2pinyin.js" />
     <Content Include="Utility\CoreScripts\highcharts-3d.js" />
     <Content Include="Utility\CoreScripts\highcharts.js" />
+    <Content Include="Utility\CoreScripts\jquery-3.0.0.min.js" />
     <Content Include="Utility\CoreScripts\jquery.qrcode.min.js" />
     <Content Include="Utility\CoreScripts\PageBox.js" />
+    <Content Include="Utility\CoreScripts\vue-router.js" />
+    <Content Include="Utility\CoreScripts\vue.min.js" />
+    <Content Include="Utility\CoreScripts\vue_min.js" />
     <Content Include="Utility\CoreStyles\MessageBox.css" />
     <Content Include="Templates\Web\NetSchool\Styles\News.css" />
     <Content Include="Templates\Web\NetSchool\Styles\notice.css" />
@@ -1625,9 +1676,6 @@
     <Content Include="Templates\Web\Neimeng\Inc\Footer.html" />
     <Content Include="Templates\Web\Neimeng\Inc\Header.html" />
     <Content Include="Templates\Web\Neimeng\Inc\Login.html" />
-    <Content Include="Templates\Web\Neimeng\Knowledge.htm" />
-    <Content Include="Templates\Web\Neimeng\Knowledges.htm" />
-    <Content Include="Templates\Web\Neimeng\KnowledgesList.htm" />
     <Content Include="Templates\Web\Neimeng\Links.htm" />
     <Content Include="Templates\Web\Neimeng\logo.jpg" />
     <Content Include="Templates\Web\Neimeng\MessageBoards.htm" />
@@ -1644,8 +1692,6 @@
     <Content Include="Templates\Web\Neimeng\Scripts\Courses.js" />
     <Content Include="Templates\Web\Neimeng\Scripts\Default.js" />
     <Content Include="Templates\Web\Neimeng\Scripts\Exam.js" />
-    <Content Include="Templates\Web\Neimeng\Scripts\Knowledges.js" />
-    <Content Include="Templates\Web\Neimeng\Scripts\KnowledgesList.js" />
     <Content Include="Templates\Web\Neimeng\Scripts\Mask.js" />
     <Content Include="Templates\Web\Neimeng\CoreScripts\Public.js" />
     <Content Include="Templates\Web\Neimeng\Scripts\QuesLoad.js" />
@@ -1658,10 +1704,8 @@
     <Content Include="Templates\Web\Neimeng\Student\NoLogin.htm" />
     <Content Include="Templates\Web\Neimeng\Student\Panel.htm" />
     <Content Include="Templates\Web\Neimeng\Student\Scripts\Index.js" />
-    <Content Include="Templates\Web\Neimeng\Student\Startpage.htm" />
     <Content Include="Templates\Web\Neimeng\Student\Styles\index.css" />
     <Content Include="Templates\Web\Neimeng\Student\Styles\Panel.css" />
-    <Content Include="Templates\Web\Neimeng\Student\Styles\Startpage.css" />
     <Content Include="Templates\Web\Neimeng\Styles\about.css" />
     <Content Include="Templates\Web\Neimeng\Styles\article.css" />
     <Content Include="Templates\Web\Neimeng\Styles\Contactus.css" />
@@ -1672,9 +1716,6 @@
     <Content Include="Templates\Web\Neimeng\Styles\demo.html" />
     <Content Include="Templates\Web\Neimeng\Styles\ErrorPage.css" />
     <Content Include="Templates\Web\Neimeng\Styles\exam.css" />
-    <Content Include="Templates\Web\Neimeng\Styles\Knowledge.css" />
-    <Content Include="Templates\Web\Neimeng\Styles\Knowledges.css" />
-    <Content Include="Templates\Web\Neimeng\Styles\KnowledgesList.css" />
     <Content Include="Templates\Web\Neimeng\Styles\Links.css" />
     <Content Include="Templates\Web\Neimeng\Styles\MessageBoards.css" />
     <Content Include="Templates\Web\Neimeng\Styles\News.css" />
@@ -1786,9 +1827,6 @@
     <Content Include="Templates\Web\School\Inc\Login.html" />
     <Content Include="Templates\Web\School\Inc\Scripts\Depart.js" />
     <Content Include="Templates\Web\School\Inc\Styles\Depart.css" />
-    <Content Include="Templates\Web\School\Knowledge.htm" />
-    <Content Include="Templates\Web\School\Knowledges.htm" />
-    <Content Include="Templates\Web\School\KnowledgesList.htm" />
     <Content Include="Templates\Web\School\Links.htm" />
     <Content Include="Templates\Web\School\logo.jpg" />
     <Content Include="Templates\Web\School\MessageBoards.htm" />
@@ -1860,8 +1898,6 @@
     <Content Include="Templates\Web\School\Scripts\Courses.js" />
     <Content Include="Templates\Web\School\Scripts\Default.js" />
     <Content Include="Templates\Web\School\Scripts\Exam.js" />
-    <Content Include="Templates\Web\School\Scripts\Knowledges.js" />
-    <Content Include="Templates\Web\School\Scripts\KnowledgesList.js" />
     <Content Include="Templates\Web\School\Scripts\Mask.js" />
     <Content Include="Templates\Web\School\CoreScripts\Public.js" />
     <Content Include="Templates\Web\School\Scripts\QuesLoad.js" />
@@ -1875,10 +1911,8 @@
     <Content Include="Templates\Web\School\Student\NoLogin.htm" />
     <Content Include="Templates\Web\School\Student\Panel.htm" />
     <Content Include="Templates\Web\School\Student\Scripts\Index.js" />
-    <Content Include="Templates\Web\School\Student\Startpage.htm" />
     <Content Include="Templates\Web\School\Student\Styles\index.css" />
     <Content Include="Templates\Web\School\Student\Styles\Panel.css" />
-    <Content Include="Templates\Web\School\Student\Styles\Startpage.css" />
     <Content Include="Templates\Web\School\Styles\about.css" />
     <Content Include="Templates\Web\School\Styles\article.css" />
     <Content Include="Templates\Web\School\Styles\Contactus.css" />
@@ -1889,9 +1923,6 @@
     <Content Include="Templates\Web\School\Styles\demo.html" />
     <Content Include="Templates\Web\School\Styles\ErrorPage.css" />
     <Content Include="Templates\Web\School\Styles\exam.css" />
-    <Content Include="Templates\Web\School\Styles\Knowledge.css" />
-    <Content Include="Templates\Web\School\Styles\Knowledges.css" />
-    <Content Include="Templates\Web\School\Styles\KnowledgesList.css" />
     <Content Include="Templates\Web\School\Styles\Links.css" />
     <Content Include="Templates\Web\School\Styles\MessageBoards.css" />
     <Content Include="Templates\Web\School\Styles\MessageBox.css" />
@@ -1980,6 +2011,10 @@
     <Content Include="Utility\echarts\chart\wordCloud.js" />
     <Content Include="Utility\echarts\echarts-all.js" />
     <Content Include="Utility\echarts\echarts.js" />
+    <Content Include="Utility\ElementUi\index.css" />
+    <Content Include="Utility\ElementUi\index.html" />
+    <Content Include="Utility\ElementUi\index.js" />
+    <Content Include="Utility\ElementUi\vue_min.js" />
     <Content Include="Utility\iconfont\depart\demo.css" />
     <Content Include="Utility\iconfont\depart\demo.html" />
     <Content Include="Utility\iconfont\depart\icondepart.css" />
@@ -2011,6 +2046,8 @@
     <Content Include="Utility\iconfont\phone\iconphone.css" />
     <Content Include="Utility\iconfont\phone\iconphone.svg" />
     <Content Include="Utility\iconfont\iconfont.css" />
+    <Content Include="Utility\Images\head1.jpg" />
+    <Content Include="Utility\Images\head2.jpg" />
     <Content Include="Utility\Images\load_016.gif" />
     <Content Include="Utility\Images\logo.gif" />
     <Content Include="Utility\Images\map_point.png" />
@@ -2240,6 +2277,10 @@
     <Compile Include="Ajax\SelfStudyLog.ashx.cs">
       <DependentUpon>SelfStudyLog.ashx</DependentUpon>
     </Compile>
+    <Compile Include="API\API.ashx.cs">
+      <DependentUpon>API.ashx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="API\SSO.ashx.cs">
       <DependentUpon>SSO.ashx</DependentUpon>
     </Compile>
@@ -2337,6 +2378,7 @@
       <DependentUpon>Default.ashx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="Download\GetExecFile.cs" />
     <Compile Include="ErrorPage.ashx.cs">
       <DependentUpon>ErrorPage.ashx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -2456,6 +2498,13 @@
     </Compile>
     <Compile Include="Manage\Admin\Students_Courses.aspx.designer.cs">
       <DependentUpon>Students_Courses.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Manage\Admin\Courses_Students.aspx.cs">
+      <DependentUpon>Courses_Students.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Manage\Admin\Courses_Students.aspx.designer.cs">
+      <DependentUpon>Courses_Students.aspx</DependentUpon>
     </Compile>
     <Compile Include="Manage\Card\Learningcard.aspx.cs">
       <DependentUpon>Learningcard.aspx</DependentUpon>
@@ -3305,6 +3354,14 @@
     </Compile>
     <Compile Include="Mobile\Certify.ashx.cs">
       <DependentUpon>Certify.ashx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Mobile\QuesExercisesItems.ashx.cs">
+      <DependentUpon>QuesExercisesItems.ashx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Mobile\Yunzhijia.ashx.cs">
+      <DependentUpon>Yunzhijia.ashx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="NewsList.ashx.cs">
@@ -5747,6 +5804,10 @@
       <Project>{739180BB-2529-485F-867F-28774EB2ACC9}</Project>
       <Name>Song.Template</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Song.ViewData\Song.ViewData.csproj">
+      <Project>{41D99603-4C27-4075-81D5-F56C553ACDC8}</Project>
+      <Name>Song.ViewData</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Themes\BluePanel\Images\footBg.jpg" />
@@ -6402,10 +6463,17 @@
     <Content Include="Ajax\Self.ashx" />
     <Content Include="Ajax\SelfCourse.ashx" />
     <Content Include="Ajax\SelfStudyLog.ashx" />
+    <Content Include="API\API.ashx" />
     <None Include="Manage\DataTemplate\课程章节.xls" />
     <Content Include="Mobile\ExamReview.ashx" />
     <Content Include="Mobile\MyFriends.ashx" />
     <Content Include="Mobile\Certify.ashx" />
+    <Content Include="Mobile\QuesExercisesItems.ashx" />
+    <Content Include="Mobile\Yunzhijia.ashx" />
+    <Content Include="Manage\Styles\Jme\Symbola.eot" />
+    <Content Include="Manage\Styles\Jme\Symbola.otf" />
+    <Content Include="Manage\Styles\Jme\Symbola.ttf" />
+    <Content Include="Manage\Styles\Jme\Symbola.woff" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -6462,6 +6530,10 @@
     <Content Include="Templates\Mobi\Default2019\CoreStyles\iconfont\iconfont.woff" />
     <Content Include="Templates\Mobi\Default2019\fonts\mui.ttf" />
     <Content Include="Templates\Mobi\Default2019\CoreStyles\iconfont\iconfont.woff2" />
+    <None Include="Utility\CkplayerX1\ckplayer\hls\LICENSE" />
+    <None Include="Utility\CkplayerX1\material\en.srt" />
+    <None Include="Utility\CkplayerX1\material\zh.vtt" />
+    <None Include="Utility\CkplayerX1\sample\ad.json" />
     <None Include="Utility\CoreStyles\Jme\Symbola.eot" />
     <None Include="Utility\CoreStyles\Jme\Symbola.otf" />
     <None Include="Utility\CoreStyles\Jme\Symbola.ttf" />
@@ -6489,6 +6561,8 @@
     <Content Include="Utility\iconfont\icon-color\icon-color.ttf" />
     <Content Include="Utility\iconfont\icon-color\icon-color.woff" />
     <Content Include="Mobile\Weixin.ashx" />
+    <Content Include="Utility\ElementUi\fonts\element-icons.ttf" />
+    <Content Include="Utility\ElementUi\fonts\element-icons.woff" />
     <None Include="Utility\PdfViewer\cmaps\78-EUC-H.bcmap" />
     <None Include="Utility\PdfViewer\cmaps\78-EUC-V.bcmap" />
     <None Include="Utility\PdfViewer\cmaps\78-H.bcmap" />

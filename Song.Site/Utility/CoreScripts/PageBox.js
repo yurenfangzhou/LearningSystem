@@ -49,13 +49,13 @@
     }
     //获取父窗口(iframe对象）
     pagebox.getParent = function (winname) {
-        var winbox = $(".PageBox[winid=" + winname + "]", window.top.document);
+        var winbox = $(".PageBox[winid='" + winname + "']", window.top.document);
         return winbox;
     }
     //获取当前窗体对象
     //winname:当前iframe名称
     pagebox.getPagebox = function (winname) {
-        var box = $(".PageBox[winid=" + winname + "]");
+        var box = $(".PageBox[winid='" + winname + "']");
         return box;
     }
     //获取父窗口的window对象
@@ -71,7 +71,7 @@
     //获取父路径
     pagebox.getParentPath = function (winname) {
         if (winname == null || winname == "") return "";
-        var winbox = $(".PageBox[winid=" + winname + "]", window.top.document);
+        var winbox = $(".PageBox[winid='" + winname + "']", window.top.document);
         var iframe = null;
         if (winbox.size() > 0) {
             iframe = winbox.find("iframe");            
@@ -112,7 +112,7 @@
                 try {
                     box.easydrag().setHandler(".PageBoxTitle")
                 .ondrag(function () {
-                    $(".PageBoxIframeMask").show();
+                    $(".PageBoxIframeMask").show().width(box.width()).height(box.height());
                 }).ondrop(function (d) {
                     $(".PageBoxIframeMask").hide();
                     var winid = $(d.target).parents(".PageBox").attr("winid");
@@ -134,7 +134,7 @@
         var hg = $(window).height();
         var wd = $(window).width();
         $("body").append("<div class=\"PageBox\" type=\"PageBox\" winid=\"" + this.WinId + "\"></div>");
-        var boxframe = $(".PageBox[winid=" + this.WinId + "]");
+        var boxframe = $(".PageBox[winid='" + this.WinId + "']");
         boxframe.attr({ "wdper": this.Wdper, "hgper": this.Hgper });
         var border = parseInt(boxframe.css("border-width")); //窗体边线宽度
         border = !isNaN(border) ? border : 0;
@@ -152,7 +152,7 @@
             }
         }
         //设置层深
-        var index = parseInt($(".screenMask[winid=" + this.WinId + "]").css("z-index"));
+        var index = parseInt($(".screenMask[winid='" + this.WinId + "']").css("z-index"));
         boxframe.css({ "z-index": index + 1 });
         //设置标题
         boxframe.append("<div class='PageBoxTitle'></div>");
@@ -202,7 +202,7 @@
             if (funcWin != null) funcWin(box);
             //清除pagbox对象
             $(".PageBox[winid='" + winid + "']").remove();
-            $(".screenMask[winid=" + winid + "]").fadeOut("slow", function () {
+            $(".screenMask[winid='" + winid + "']").fadeOut("slow", function () {
                 $(this).remove();
             });
         }
@@ -235,7 +235,7 @@
     //生成遮罩层
     pagebox.prototype.maskOpen = function () {
         $("body").append("<div class=\"screenMask\" winid='" + this.WinId + "'/>");
-        var mask = $(".screenMask[winid=" + this.WinId + "]");
+        var mask = $(".screenMask[winid='" + this.WinId + "']");
         //屏幕的宽高
         var hg = document.documentElement.clientHeight > document.body.scrollWidth ? document.documentElement.clientHeight : document.body.scrollWidth;
         var wd = document.documentElement.clientWidth > document.body.scrollHeight ? document.documentElement.clientWidth : document.body.scrollHeight;
@@ -268,6 +268,7 @@
     //计算坐标相对于窗体，并记录在pagebox上
     pagebox.coordinate = function (winid) {
         var box = $(".PageBox[winid='" + winid + "']");
+        if(box.size()<1)return;
         var winhg = $(window).height();
         var winwd = $(window).width();
         var off = box.offset();

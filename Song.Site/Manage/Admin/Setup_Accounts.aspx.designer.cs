@@ -76,6 +76,15 @@ namespace Song.Site.Manage.Admin {
         protected global::System.Web.UI.WebControls.CheckBox cbIsLoginForSms;
         
         /// <summary>
+        /// cbIsLoginForWeixin 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox cbIsLoginForWeixin;
+        
+        /// <summary>
         /// cbIsTraningLogin 控件。
         /// </summary>
         /// <remarks>
@@ -83,24 +92,6 @@ namespace Song.Site.Manage.Admin {
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox cbIsTraningLogin;
-        
-        /// <summary>
-        /// ddlQscale 控件。
-        /// </summary>
-        /// <remarks>
-        /// 自动生成的字段。
-        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlQscale;
-        
-        /// <summary>
-        /// cbIsVideoNoload 控件。
-        /// </summary>
-        /// <remarks>
-        /// 自动生成的字段。
-        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox cbIsVideoNoload;
         
         /// <summary>
         /// btnLogin 控件。

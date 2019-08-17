@@ -22,6 +22,10 @@ namespace Song.Site.Mobile
 
         protected override void InitPageTemplate(HttpContext context)
         {
+            //一些设置项
+            WeiSha.Common.CustomConfig config = CustomConfig.Load(this.Organ.Org_Config);
+            this.Document.SetValue("IsRegStudent", config["IsRegStudent"].Value.Boolean ?? true);   //是否允许注册   
+
             #region 具体操作代码
             string access_token = WeiSha.Common.Request.QueryString["token"].String;
             string openid = WeiSha.Common.Request.QueryString["openid"].String;
@@ -45,7 +49,7 @@ namespace Song.Site.Mobile
                 if (acc == null)
                 {                    
                     //账户不存在，以下用于注册
-                    WeiSha.Common.CustomConfig config = CustomConfig.Load(org.Org_Config);
+                    //WeiSha.Common.CustomConfig config = CustomConfig.Load(org.Org_Config);
                     this.Document.SetValue("forpw", config["IsLoginForPw"].Value.Boolean ?? true);  //启用账号密码登录
                     this.Document.SetValue("forsms", config["IsLoginForSms"].Value.Boolean ?? true);     //启用手机短信验证登录
                     this.Document.SetValue("IsQQDirect", Business.Do<ISystemPara>()["QQDirectIs"].Boolean ?? true);    //是否允许qq直接注册登录
@@ -124,7 +128,7 @@ namespace Song.Site.Mobile
             Song.Entities.Accounts acc = new Entities.Accounts();
             try
             {
-                string infoJson = WeiSha.Common.Request.WebResult(userUrl);
+                string infoJson = WeiSha.Common.Request.HttpGet(userUrl);
                 JObject jo = (JObject)JsonConvert.DeserializeObject(infoJson);
                 string ret = jo["ret"] != null ? jo["ret"].ToString() : string.Empty;  //返回码
                 string msg = jo["msg"] != null ? jo["msg"].ToString() : string.Empty;  //返回的提示信息

@@ -22,6 +22,10 @@ namespace Song.Site
 
         protected override void InitPageTemplate(HttpContext context)
         {
+            //一些设置项
+            WeiSha.Common.CustomConfig config = CustomConfig.Load(this.Organ.Org_Config);
+            this.Document.SetValue("IsRegStudent", config["IsRegStudent"].Value.Boolean ?? true);   //是否允许注册   
+
             #region 此段代码用于取token与openid
             string code = WeiSha.Common.Request.QueryString["code"].String;     //验证用的code，只用一次即失效
             if (Request.ServerVariables["REQUEST_METHOD"] == "GET" && !string.IsNullOrWhiteSpace(code))
@@ -57,7 +61,7 @@ namespace Song.Site
                 if (acc == null)
                 {                    
                     //账户不存在，以下用于注册
-                    WeiSha.Common.CustomConfig config = CustomConfig.Load(org.Org_Config);
+                    //WeiSha.Common.CustomConfig config = CustomConfig.Load(org.Org_Config);
                     this.Document.SetValue("forpw", config["IsLoginForPw"].Value.Boolean ?? true);  //启用账号密码登录
                     this.Document.SetValue("forsms", config["IsLoginForSms"].Value.Boolean ?? true);     //启用手机短信验证登录
                     this.Document.SetValue("IsQQDirect", Business.Do<ISystemPara>()["QQDirectIs"].Boolean ?? true);    //是否允许qq直接注册登录
@@ -139,7 +143,7 @@ namespace Song.Site
             string error = string.Empty;
             try
             {
-                string retjson = WeiSha.Common.Request.WebResult(url);
+                string retjson = WeiSha.Common.Request.HttpGet(url);
                 Regex r = new Regex(@"(?<=access_token=)\S[^&]+(?=&)");
                 Match macth = r.Match(retjson);
                 if (macth.Success)
@@ -168,7 +172,7 @@ namespace Song.Site
             //获取当前QQ登录账户的Opeinid
             string openid = string.Empty;
             string url = "https://graph.qq.com/oauth2.0/me?access_token=" + access_token;
-            string retjson = WeiSha.Common.Request.WebResult(url);
+            string retjson = WeiSha.Common.Request.HttpGet(url);
             Regex r = new Regex(@"(?<=""openid"":"")\S[^""]+(?=""})");
             Match macth = r.Match(retjson);
             if (macth.Success)
@@ -193,7 +197,7 @@ namespace Song.Site
             Song.Entities.Accounts acc = new Entities.Accounts();
             try
             {
-                string infoJson = WeiSha.Common.Request.WebResult(userUrl);
+                string infoJson = WeiSha.Common.Request.HttpGet(userUrl);
                 JObject jo = (JObject)JsonConvert.DeserializeObject(infoJson);
                 string ret = jo["ret"] != null ? jo["ret"].ToString() : string.Empty;  //返回码
                 string msg = jo["msg"] != null ? jo["msg"].ToString() : string.Empty;  //返回的提示信息

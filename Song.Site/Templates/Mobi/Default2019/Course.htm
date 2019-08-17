@@ -9,7 +9,8 @@
 </head>
 <body>
 <div id="main">
-  <div class="photo" > <img  src="{$course.cou_logo}" default="images/cou_nophoto.jpg"/> </div>
+ <vt:function var="path" method="Path" args="course"/>
+  <div class="photo" > <img  src="{$path}{$course.cou_logo}" default="images/cou_nophoto.jpg"/> </div>
 <div id="Context">  <div class="couName"><vt:if var="course.cou_name" value="" compare="!="> {$course.cou_name}
           <vt:else/>
           (当前课程不存在，或课程被暂停学习) </vt:if></div>
@@ -51,6 +52,11 @@
       </vt:if>
       <!--主讲教师结束-->
       <div class="introBox">
+       <vt:function var="intro" method="ClearHtml" args="$course.Cou_Target" />
+                     <vt:if var="intro" value="" compare="!="  remark="学习目标">
+                    <span>学习目标：</span>                   
+                    <div class="couTarget">{$:#.intro}</div>
+                    </vt:if> 
         <vt:if var="course.cou_intro" value="" compare="="> 当前课程没有编辑详细资料。
           <vt:else/>
           {$course.cou_intro} </vt:if>

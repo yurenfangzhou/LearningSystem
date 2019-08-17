@@ -20,6 +20,8 @@ namespace Song.Site.Mobile
         protected string loyout = WeiSha.Common.Request.QueryString["loyout"].String;
         protected override void InitPageTemplate(HttpContext context)
         {
+            if (Extend.LoginState.Accounts.IsLogin)
+                this.Response.Redirect("default.ashx");
             //相关参数
             WeiSha.Common.CustomConfig config = CustomConfig.Load(this.Organ.Org_Config);
             //登录方式
@@ -28,6 +30,7 @@ namespace Song.Site.Mobile
             this.Document.SetValue("forpw", IsLoginForPw);
             this.Document.SetValue("forsms", IsLoginForSms);
             this.Document.SetValue("islogin", !IsLoginForPw && !IsLoginForSms);
+            this.Document.SetValue("isWeixin", WeiSha.Common.Browser.IsWeixin); //是否在微信中
             //界面状态
             if (!IsLoginForPw && IsLoginForSms) loyout = "mobile";
             this.Document.SetValue("loyout", loyout);
@@ -70,6 +73,8 @@ namespace Song.Site.Mobile
             this.Document.SetValue("WeixinLoginIsUse", Business.Do<ISystemPara>()["WeixinLoginIsUse"].Boolean ?? false);
             this.Document.SetValue("WeixinAPPID", Business.Do<ISystemPara>()["WeixinpubAPPID"].String);
             this.Document.SetValue("WeixinReturl", Business.Do<ISystemPara>()["WeixinpubReturl"].Value ?? "http://" + WeiSha.Common.Server.MainName);
+            //金碟云之家登录
+            this.Document.SetValue("YunzhijiaLoginIsuse", Business.Do<ISystemPara>()["YunzhijiaLoginIsuse"].Boolean ?? false);
             //记录当前机构到本地，用于QQ或微信注册时的账户机构归属问题
             System.Web.HttpCookie cookie = new System.Web.HttpCookie("ORGID");
             cookie.Value = this.Organ.Org_ID.ToString();
